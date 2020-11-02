@@ -12,16 +12,26 @@ export const checkAndSend = async (navigation) => {
   var orders = [];
 
   orders = await orderService.getDeliveryManOrders("A caminho");
+
   if (orders.length > 0) {
     store.dispatch(actionSetOrder(orders[0]));
-    navigation.navigate("OrderOnTheWay");
+
+    setTimeout(() => {
+      navigation.navigate("OrderOnTheWay");
+    },500);
+
     return;
   };
 
   orders = await orderService.getDeliveryManOrders("Saiu para entregar");
+
   if (orders.length > 0) {
     store.dispatch(actionSetOrders(orders));
-    navigation.navigate("OrderToDeliver");
+    
+    setTimeout(()=>{
+      navigation.navigate("OrderToDeliver");
+    }, 500);
+
     return;
   };
 

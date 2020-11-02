@@ -16,7 +16,8 @@ const login = ({ navigation }) => {
 
   const [offset] = useState(new Animated.ValueXY({ x: 0, y: 95 }));
   const [opacity] = useState(new Animated.Value(0));
-  const [logo] = useState(new Animated.ValueXY({ x: 230, y: 255 }));
+  // const [logo] = useState(new Animated.ValueXY({ x: 230, y: 255 }));
+  const [logo] = useState(new Animated.ValueXY({ x: 250, y: 250 }));
 
   useFocusEffect(
     useCallback(() => {
@@ -48,12 +49,12 @@ const login = ({ navigation }) => {
   function keyboardDidShow() {
     Animated.parallel([
       Animated.timing(logo.x, {
-        toValue: 85,
+        toValue: 200,
         duration: 100,
         useNativeDriver: false,
       }),
       Animated.timing(logo.y, {
-        toValue: 95,
+        toValue: 200,
         duration: 100,
         useNativeDriver: false,
       }),
@@ -63,12 +64,12 @@ const login = ({ navigation }) => {
   function keyboardDidHide() {
     Animated.parallel([
       Animated.timing(logo.x, {
-        toValue: 230,
+        toValue: 300,
         duration: 100,
         useNativeDriver: false,
       }),
       Animated.timing(logo.y, {
-        toValue: 255,
+        toValue: 300,
         duration: 100,
         useNativeDriver: false,
       }),
@@ -85,10 +86,10 @@ const login = ({ navigation }) => {
     <KeyboardAvoidingView style={styles.background}>
 
       {/* Logotipo */}
-      <View style={styles.containerLogo}>
+      <View style={[styles.containerLogo]}>
         <Animated.Image
           style={{ width: logo.x, height: logo.y }}
-          source={require("../../../assets/logo.png")}
+          source={require("../../../assets/motoboy.png")}
         />
       </View>
 
@@ -97,7 +98,9 @@ const login = ({ navigation }) => {
         <Animated.View
           style={[
             styles.container, {
-              opacity: opacity, transform: [{ translateY: offset.y }]
+              opacity: opacity, 
+              marginTop: 40,
+              // transform: [{ translateY: offset.y }]
             }]}
         >
           <TextInput
@@ -123,12 +126,7 @@ const login = ({ navigation }) => {
         </Animated.View>
       }
 
-      {loading &&
-        <Loader />
-        // <View style={styles.loadingContainer}>
-        //   <Text style={styles.loadingText}>Loading ...</Text>
-        // </View>
-      }
+      {loading && <Loader />}
 
     </KeyboardAvoidingView>
   );
@@ -142,8 +140,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#f6f6f6",
   },
   containerLogo: {
-    flex: 1,
-    justifyContent: "center",
+    marginTop: 10,
   },
   container: {
     flex: 1,
@@ -152,29 +149,22 @@ const styles = StyleSheet.create({
     width: "90%",
     paddingBottom: 50,
   },
-  loadingContainer: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    width: "90%",
-    paddingBottom: 50,
-  },
-  loadingText: {
-    fontSize: 20,
-  },
   input: {
     backgroundColor: "#fff",
+    elevation: 5,
     borderWidth: 1,
     borderColor: "#000",
     width: "90%",
-    marginBottom: 15,
+    marginBottom: 10,
     color: "#000",
     fontSize: 17,
     borderRadius: 7,
-    padding: 10,
+    paddingVertical: 5,
+    paddingHorizontal: 15,
   },
   btnSubmit: {
     backgroundColor: "#35AAFF",
+    elevation: 5,
     width: "90%",
     height: 45,
     alignItems: "center",
