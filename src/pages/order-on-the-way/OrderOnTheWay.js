@@ -162,9 +162,9 @@ const OrderOnTheWay = ({ navigation }) => {
 
                 {orderItems && (
                     <View style={styles.itemsContainer}>
-                        {orderItems.map((item) => {
+                        {orderItems.map((item, idx) => {
                             return (
-                                <Text style={{fontSize: 12, fontWeight: "bold"}} key={item.idProductOrderItem}>
+                                <Text style={{fontSize: 12, fontWeight: "bold"}} key={idx}>
                                     {item.quantityOrderItem}x ({item.DescricaoVinho})
                                 </Text>
                             )
@@ -178,7 +178,10 @@ const OrderOnTheWay = ({ navigation }) => {
             <View style={styles.endDeliveryContainer}>
                 <TouchableOpacity
                     style={styles.btnEnd}
-                    onPress={() => { Linking.openURL(`tel:${11987573104}`) }}
+                    onPress={() => {
+                        let phoneNumber = order.CustomerPhoneNumberOrder.replace(/\D/g, '');
+                        Linking.openURL(`tel:${phoneNumber}`)
+                    }}
                 >
                     <Text>Ligar</Text>
                 </TouchableOpacity>

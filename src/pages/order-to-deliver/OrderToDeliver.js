@@ -71,7 +71,7 @@ const OrderToDeliver = ({ navigation, orders }) => {
                                                     }}
                                                 >
                                                     Ver Mais
-                        </Text>
+                                                </Text>
                                             </View>
 
                                             <Title>Bairro : {order.CustomerNeighborhoodOrder}</Title>
@@ -85,7 +85,7 @@ const OrderToDeliver = ({ navigation, orders }) => {
                                                 onPress={() => startDelivery(order)}
                                             >
                                                 Iniciar Entrega
-                      </Paragraph>
+                                            </Paragraph>
                                         </Card.Content>
                                     </Card>
                                 </View>

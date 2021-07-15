@@ -176,7 +176,7 @@ const OrderSelect = ({ navigation, orders }) => {
                     >
                         <Text style={styles.textProced}>
                             Prosseguir
-            </Text>
+                        </Text>
                     </TouchableOpacity>
                 )}
 

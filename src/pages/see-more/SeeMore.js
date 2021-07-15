@@ -14,11 +14,9 @@ import Header from "../../components/Header";
 const SeeMore = ({ navigation }) => {
     const [order] = useState(store.getState().orderState.order);
     const [orderItems, setOrderItems] = useState([]);
-
-    // useEffect(() => { getOrderItemsList() }, []);
-
+    
     useEffect(() => {
-        BackHandler.addEventListener('hardwareBackPress', () => true);
+        // BackHandler.addEventListener('hardwareBackPress', () => true);
         getOrderItemsList();
     }, []);
 
@@ -118,9 +116,9 @@ const SeeMore = ({ navigation }) => {
                 {/* ORDER ITEMS */}
                 {orderItems && (
                     <View style={styles.itemsContainer}>
-                        {orderItems.map((item) => {
+                        {orderItems.map((item, idx) => {
                             return (
-                                <Text style={{fontWeight: "bold", fontSize: 12}} key={item.idProductOrderItem}>
+                                <Text style={{fontWeight: "bold", fontSize: 12}} key={idx}>
                                     {item.quantityOrderItem}x ({item.DescricaoVinho})
                                 </Text>
                             )
@@ -138,12 +136,15 @@ const SeeMore = ({ navigation }) => {
                 >
                     <Text style={{ fontWeight: "bold", color: "#fff" }}>
                         Voltar
-          </Text>
+                    </Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
                     style={styles.btnEnd}
-                    onPress={() => { Linking.openURL(`tel:${11987573104}`) }}
+                    onPress={() => {
+                        let phoneNumber = order.CustomerPhoneNumberOrder.replace(/\D/g, '');
+                        Linking.openURL(`tel:${phoneNumber}`) 
+                    }}
                 >
                     <Text style={{ fontWeight: "bold", color: "#fff" }}>
                         Ligar
