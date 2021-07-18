@@ -22,10 +22,18 @@ const OrderOnTheWay = ({ navigation }) => {
     const [orderItems, setOrderItems] = useState([]);
 
     useEffect(() => {
-        BackHandler.addEventListener('hardwareBackPress', () => true);
+        BackHandler.addEventListener('hardwareBackPress', () => {
+            navigation.navigate("Login");
+            return true;
+        });
+
         setOrder(store.getState().orderState.order);
         getOrderItemsList();
-        return () => setLoading(false);  // unFocus
+        
+        return () => {
+            setLoading(false);  // unFocus
+            BackHandler.removeEventListener('hardwareBackPress');
+        };
     }, []);
 
     useFocusEffect(

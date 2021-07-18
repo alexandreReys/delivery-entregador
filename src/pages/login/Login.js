@@ -29,7 +29,7 @@ const login = ({ navigation }) => {
   useEffect(() => {
     if (process.env.NODE_ENV === "development") {
       setUser("ale");
-      setPassword("1133");
+      setPassword("1111");
     };
     
     keyboardDidShowListener = Keyboard.addListener(

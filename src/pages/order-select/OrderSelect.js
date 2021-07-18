@@ -24,7 +24,11 @@ const OrderSelect = ({ navigation, orders }) => {
     const [showText, setShowText] = useState(false);
 
     useEffect(() => {
-        BackHandler.addEventListener('hardwareBackPress', () => true);
+        BackHandler.addEventListener('hardwareBackPress', () => {
+            navigation.navigate("Login");
+            return true;
+        });
+        return () => BackHandler.removeEventListener('hardwareBackPress');
     }, []);
 
     const onPressBtnAdd = () => setShowText(!showText);
@@ -85,10 +89,10 @@ const OrderSelect = ({ navigation, orders }) => {
             store.dispatch(actionSetOrders(orders));
 
             setLoading(true);
-            setTimeout(()=>{
+            setTimeout(() => {
                 setLoading(false);
                 navigation.navigate("OrderToDeliver");
-            },500);
+            }, 500);
         };
     };
 
@@ -117,9 +121,34 @@ const OrderSelect = ({ navigation, orders }) => {
                 </Text>
 
                 {/* + Adicionar numero do pedido */}
-                <Text style={styles.textAddOrder} onPress={onPressBtnAdd}>
-                    + Adicionar numero do pedido
-                </Text>
+                <View style={{ 
+                    width: "100%",
+                    disply: "flex", 
+                    flexDirection: "row", 
+                    justifyContent: "space-between", 
+                    alignItems: "flex-start",
+                }}>
+                    <View>
+                        {!showText && (
+                            <Text style={styles.textAddOrder} onPress={onPressBtnAdd}>
+                                + Adicionar pedido
+                            </Text>
+                        )}
+                        {showText && (
+                            <Text style={[styles.textAddOrder, {marginLeft: 25}]} onPress={onPressBtnAdd}>
+                                X Fechar
+                            </Text>
+                        )}
+                    </View>
+
+                    {!showText && (
+                        <View>
+                            <Text style={styles.textAddOrder} onPress={onPressBtnAdd}>
+                                Consultar Entregas
+                            </Text>
+                        </View>
+                    )}
+                </View>
 
                 {/* Digite Numero do pedido */}
                 {showText && (
@@ -148,7 +177,7 @@ const OrderSelect = ({ navigation, orders }) => {
                 {/* cards com os pedidos */}
                 {orders && !showText && (
                     <ScrollView vertical style={styles.cardScroolview}>
-                        
+
                         {orders.map((order) => {
                             return (
                                 <View key={order.IdOrder} style={styles.card}>
@@ -211,9 +240,9 @@ const styles = StyleSheet.create({
     },
 
     textAddOrder: {
-        alignSelf: "flex-start",
         color: "red",
         marginBottom: 20,
+        fontWeight: "bold",
     },
 
     input: {

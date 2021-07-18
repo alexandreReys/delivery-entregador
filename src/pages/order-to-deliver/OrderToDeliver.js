@@ -21,7 +21,11 @@ import Header from "../../components/Header";
 const OrderToDeliver = ({ navigation, orders }) => {
 
     useEffect(() => {
-        BackHandler.addEventListener('hardwareBackPress', () => true);
+        BackHandler.addEventListener('hardwareBackPress', () => {
+            navigation.navigate("Login");
+            return true;
+        });
+        return () => BackHandler.removeEventListener('hardwareBackPress');
     }, []);
 
     const startDelivery = (order) => {

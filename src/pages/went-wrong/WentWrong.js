@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {
   KeyboardAvoidingView, TouchableOpacity,
-  View, StyleSheet, Text, Alert
+  View, StyleSheet, Text, Alert, BackHandler,
 } from "react-native";
 import { TextInput } from "react-native-paper";
 import { Picker } from "@react-native-community/picker";
@@ -16,6 +16,14 @@ const SeeMore = ({ navigation }) => {
   const [order] = useState(store.getState().orderState.order);
   const [occurrence, setOccurrence] = useState("");
   const [details, setDetails] = useState("");
+
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', () => {
+        navigation.navigate("OrderOnTheWay");
+        return true;
+    });
+    // return () => BackHandler.removeEventListener('hardwareBackPress');
+}, []);
 
   const onPressBtnConfirm = () => {
     Alert.alert("Finalizar Entrega", "Confirma ?", [

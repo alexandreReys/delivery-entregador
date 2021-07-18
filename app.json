@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "deliverywebentregador",
-    "slug": "deliverywebentregador",
+    "name": "entregadoranrdelivery",
+    "slug": "entregadoranrdelivery",
     "platforms": [
       "ios",
       "android"
@@ -22,11 +22,11 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anralexandre.deliverywebentregador",
+      "bundleIdentifier": "com.anralexandre.entregadoranrdelivery",
       "buildNumber": "1.0.3"
     },
     "android": {
-      "package": "com.anralexandre.deliverywebentregador",
+      "package": "com.anralexandre.entregadoranrdelivery",
       "permissions": [
         "ACCESS_COARSE_LOCATION", 
         "ACCESS_FINE_LOCATION"

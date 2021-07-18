@@ -16,8 +16,13 @@ const SeeMore = ({ navigation }) => {
     const [orderItems, setOrderItems] = useState([]);
     
     useEffect(() => {
-        // BackHandler.addEventListener('hardwareBackPress', () => true);
+        BackHandler.addEventListener('hardwareBackPress', () => {
+            navigation.navigate("OrderToDeliver");
+            return true;
+        });
         getOrderItemsList();
+        
+        return () => BackHandler.removeEventListener('hardwareBackPress');
     }, []);
 
     const getOrderItemsList = async () => {
