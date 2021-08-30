@@ -22,10 +22,14 @@ const login = ({ navigation }) => {
   useFocusEffect(
     useCallback(() => {
       setLoading(false);
-      return ()=>{setLoading(false)};  // unFocus
+      return ()=>{
+        setLoading(false);
+        setUser("");
+        setPassword("");
+      };  // unFocus
     }, [])
   );
-
+  
   useEffect(() => {
     if (process.env.NODE_ENV === "development") {
       setUser("ale");
@@ -114,6 +118,7 @@ const login = ({ navigation }) => {
           <TextInput
             style={styles.input}
             placeholder="Senha"
+            secureTextEntry={true}
             autoCorrect={false}
             value={password}
             onChangeText={(text) => { setPassword(text) }}

@@ -1,22 +1,15 @@
 import React, { useEffect } from "react";
-import { connect } from "react-redux";
 import {
     KeyboardAvoidingView, Text, StyleSheet,
     View, ScrollView, Alert, BackHandler
 } from "react-native";
+import { connect } from "react-redux";
 import { Card, Title, Paragraph } from "react-native-paper";
-
 import store from "../../store";
 import { actionSetOrder, actionSetOrders } from "../../store/actions";
-
 import * as utils from "../../utils";
 import * as orderService from "../../services/orderService";
-
 import Header from "../../components/Header";
-
-
-
-
 
 const OrderToDeliver = ({ navigation, orders }) => {
 
@@ -42,8 +35,8 @@ const OrderToDeliver = ({ navigation, orders }) => {
         else {
             store.dispatch(actionSetOrder(order));
             store.dispatch(actionSetOrders([]));
-            navigation.navigate("OrderOnTheWay");
-        }
+            navigation.navigate('OrderOnTheWay', { orderParam: order });
+        };
     };
 
     return (
@@ -140,7 +133,7 @@ const styles = StyleSheet.create({
 
     seeMore: {
         alignSelf: "flex-end",
-        color: "red",
+        color: "#B71C1C",
         fontWeight: "bold",
     },
 
@@ -151,7 +144,7 @@ const styles = StyleSheet.create({
 
     startDelivery: {
         alignSelf: "center",
-        color: "red",
+        color: "#D32F2F",
         fontWeight: "bold",
     },
 

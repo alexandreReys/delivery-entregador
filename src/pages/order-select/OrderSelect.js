@@ -37,7 +37,8 @@ const OrderSelect = ({ navigation, orders }) => {
 
         if (!orderId) return setShowText(false);
 
-        const order = await orderService.getOrder(orderId);
+        const order = await orderService.getOrderById(orderId);
+
         if (!order) {
             utils.showAlert("Ops !!", "Pedido não encontrado");
             setOrderId("");
@@ -143,7 +144,11 @@ const OrderSelect = ({ navigation, orders }) => {
 
                     {!showText && (
                         <View>
-                            <Text style={styles.textAddOrder} onPress={onPressBtnAdd}>
+                            <Text style={[styles.textAddOrder, {color: "maroon"}]} 
+                                onPress={() => {
+                                    navigation.navigate("DeliveryHistory");
+                                }}
+                            >
                                 Consultar Entregas
                             </Text>
                         </View>
@@ -158,18 +163,18 @@ const OrderSelect = ({ navigation, orders }) => {
                             label="Numero do pedido"
                             value={orderId}
                             style={styles.input}
-                            onChangeText={(value) => {
-                                setOrderId(value);
-                            }}
                             keyboardType="numeric"
                             returnKeyType="done"
                             autoCorrect={false}
+                            onChangeText={ (value) => { setOrderId(value) }}
                         />
                         <TouchableOpacity
                             style={styles.btnConfirm}
                             onPress={onPressBtnConfirm}
                         >
-                            <Text style={styles.textConfirm}>Confirmar</Text>
+                            <Text style={styles.textConfirm}>
+                                Confirmar
+                            </Text>
                         </TouchableOpacity>
                     </>
                 )}

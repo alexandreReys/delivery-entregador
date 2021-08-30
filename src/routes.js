@@ -8,6 +8,7 @@ import OrderOnTheWay from "./pages/order-on-the-way/OrderOnTheWay";
 import SeeMore from "./pages/see-more/SeeMore";
 import Map from "./pages/map/Map";
 import WentWrong from "./pages/went-wrong/WentWrong";
+import DeliveryHistory from "./pages/delivery-history";
 
 const Stack = createStackNavigator();
 
@@ -50,6 +51,11 @@ function Routes() {
             <Stack.Screen
                 name="WentWrong"
                 component={WentWrong}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen
+                name="DeliveryHistory"
+                component={DeliveryHistory}
                 options={{ headerShown: false }}
             />
         </Stack.Navigator>

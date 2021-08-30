@@ -15,10 +15,11 @@ import SeeMoreHeader from "../../components/SeeMoreHeader";
 import Loader from "../../components/Loader";
 import { useFocusEffect } from "@react-navigation/native";
 
-const OrderOnTheWay = ({ navigation }) => {
-    const [loading, setLoading] = useState(false);
+const OrderOnTheWay = ({ route, navigation }) => {
+    const { orderParam } = route.params;
 
-    const [order, setOrder] = useState(store.getState().orderState.order);
+    const [loading, setLoading] = useState(false);
+    const [order, setOrder] = useState();
     const [orderItems, setOrderItems] = useState([]);
 
     useEffect(() => {
@@ -27,14 +28,16 @@ const OrderOnTheWay = ({ navigation }) => {
             return true;
         });
 
-        setOrder(store.getState().orderState.order);
-        getOrderItemsList();
-        
         return () => {
             setLoading(false);  // unFocus
             BackHandler.removeEventListener('hardwareBackPress');
         };
     }, []);
+
+    useEffect(() => {
+        if (orderParam) setOrder(orderParam);
+        getOrderItemsList(orderParam.IdOrder);
+    }, [orderParam.IdOrder]);
 
     useFocusEffect(
         useCallback(() => {
@@ -45,7 +48,7 @@ const OrderOnTheWay = ({ navigation }) => {
 
     const getOrderItemsList = async () => {
         async function getOrderItems() {
-            const items = await orderService.getOrderItems(order.IdOrder);
+            const items = await orderService.getOrderItems(orderParam.IdOrder);
             if (items) setOrderItems(items);
         };
         getOrderItems();
@@ -68,25 +71,24 @@ const OrderOnTheWay = ({ navigation }) => {
             setLoading(true);
             const responseOK = await orderService.endDelivery(order.IdOrder);
             setLoading(false);
-    
+
             if (!responseOK)
                 utils.showAlert('Deu Ruim !!', 'Não foi possivel atualizar a operação !!');
             else {
                 store.dispatch(actionClearOrders());
-
+                setOrder(null);
+                setOrderItems([]);
                 setLoading(true);
                 setTimeout(() => {
                     utils.checkAndSend(navigation);
                 }, 1000);
             };
         };
-    };    
+    };
 
     const handleMapButton = () => {
         navigation.navigate('Map')
     };
-
-    const totalOrder = masks.moneyMask(order.TotalOrder);
 
     return (
         <KeyboardAvoidingView style={styles.mainContainer}>
@@ -102,109 +104,113 @@ const OrderOnTheWay = ({ navigation }) => {
                 </Text>
             </View>
 
-            {/* order number, address, map */}
-            <View style={styles.orderContainer}>
+            {order && 
 
-                {/* order number and customer address */}
-                <View style={{ width: "80%" }}>
-                    <Text style={{ fontWeight: "bold", color: "maroon" }}>
-                        Pedido: {order.IdOrder}
-                    </Text>
+                <>
+                    {/* order number, address, map */}
+                    <View style={styles.orderContainer}>
+                        {/* order number and customer address */}
+                        <View style={{ width: "80%" }}>
+                            <Text style={{ fontWeight: "bold", color: "maroon" }}>
+                                Pedido: {order.IdOrder}
+                            </Text>
 
-                    <View style={styles.addressContainer}>
-                        <Text style={{ fontWeight: "bold", color: "navy" }}>
-                            Bairro: {order.CustomerNeighborhoodOrder}
-                        </Text>
-                        <Text style={{fontSize: 12}}>
-                            {order.CustomerAddressOrder}
-                        </Text>
-                    </View>
-
-                </View>
-
-                {/* map */}
-                <TouchableOpacity
-                    style={styles.mapContainer}
-                    onPress={handleMapButton}
-                >
-                    <MaterialIcons
-                        name="directions"
-                        style={{ fontSize: 26, color: "blue" }}
-                    />
-                    <Text style={{ fontSize: 12, fontWeight: "bold", color: "blue" }}>
-                        Mapa
-          </Text>
-                </TouchableOpacity>
-
-            </View>
-
-            {/* customer name, comments, payment type and total value */}
-            <View style={styles.customerContainer}>
-                <Text style={{ fontWeight: "bold", color: "navy" }}>
-                    Cliente: {order.CustomerNameOrder}
-                </Text>
-
-                { !!order.CommentsOrder && (
-                    <>
-                        <Text style={{ fontWeight: "bold", color: "maroon", marginTop: 10 }}>
-                            Observações, instruções, referência, etc:
-                        </Text>
-
-                        <Text style={{ color: "black", fontSize: 12 }}>
-                            {order.CommentsOrder.trim()}
-                        </Text>
-                    </>
-                )}
-
-                <Text style={{ fontWeight: "bold", color: "navy", marginTop: 10 }}>
-                    Pagamento: {order.PaymantTypeOrder}
-                </Text>
-
-                <Text style={{ fontWeight: "bold", color: "navy" }}>
-                    COBRAR NA ENTREGA: {totalOrder}
-                </Text>
-            </View>
-
-            {/* order items */}
-            <ScrollView vertical style={styles.scroolview}>
-
-                {orderItems && (
-                    <View style={styles.itemsContainer}>
-                        {orderItems.map((item, idx) => {
-                            return (
-                                <Text style={{fontSize: 12, fontWeight: "bold"}} key={idx}>
-                                    {item.quantityOrderItem}x ({item.DescricaoVinho})
+                            <View style={styles.addressContainer}>
+                                <Text style={{ fontWeight: "bold", color: "navy" }}>
+                                    Bairro: {order.CustomerNeighborhoodOrder}
                                 </Text>
-                            )
-                        })}
+                                <Text style={{ fontSize: 12 }}>
+                                    {order.CustomerAddressOrder}
+                                </Text>
+                            </View>
+
+                        </View>
+
+                        {/* map */}
+                        <TouchableOpacity
+                            style={styles.mapContainer}
+                            onPress={handleMapButton}
+                        >
+                            <MaterialIcons
+                                name="directions"
+                                style={{ fontSize: 26, color: "blue" }}
+                            />
+                            <Text style={{ fontSize: 12, fontWeight: "bold", color: "blue" }}>
+                                Mapa
+                            </Text>
+                        </TouchableOpacity>
                     </View>
-                )}
 
-            </ScrollView>
+                    {/* customer name, comments, payment type and total value */}
+                    <View style={styles.customerContainer}>
+                        <Text style={{ fontWeight: "bold", color: "navy" }}>
+                            Cliente: {order.CustomerNameOrder}
+                        </Text>
 
-            {/* call button and end delivety button */}
-            <View style={styles.endDeliveryContainer}>
-                <TouchableOpacity
-                    style={styles.btnEnd}
-                    onPress={() => {
-                        let phoneNumber = order.CustomerPhoneNumberOrder.replace(/\D/g, '');
-                        Linking.openURL(`tel:${phoneNumber}`)
-                    }}
-                >
-                    <Text>Ligar</Text>
-                </TouchableOpacity>
+                        {!!order.CommentsOrder && (
+                            <>
+                                <Text style={{ fontWeight: "bold", color: "maroon", marginTop: 10 }}>
+                                    Observações, instruções, referência, etc:
+                                </Text>
 
-                <TouchableOpacity
-                    style={styles.btnEnd}
-                    onPress={onPressBtnEndDelivery}
-                >
-                    <Text style={{ fontWeight: "bold", color: "#666" }}>
-                        FINALIZAR ENTREGA
-          </Text>
-                </TouchableOpacity>
+                                <Text style={{ color: "black", fontSize: 12 }}>
+                                    {order.CommentsOrder.trim()}
+                                </Text>
+                            </>
+                        )}
 
-            </View>
+                        <Text style={{ fontWeight: "bold", color: "navy", marginTop: 10 }}>
+                            Pagamento: {order.PaymantTypeOrder}
+                        </Text>
 
+                        <Text style={{ fontWeight: "bold", color: "navy" }}>
+                            COBRAR NA ENTREGA: {order.TotalOrder}
+                            {/* {masks.moneyMask(order.TotalOrder)} */}
+                        </Text>
+                    </View>
+
+                    {/* order items */}
+                    <ScrollView vertical style={styles.scroolview}>
+
+                        {orderItems && (
+                            <View style={styles.itemsContainer}>
+                                {orderItems.map((item, idx) => {
+                                    return (
+                                        <Text style={{ fontSize: 12, fontWeight: "bold" }} key={idx}>
+                                            {item.quantityOrderItem}x ({item.DescricaoVinho})
+                                        </Text>
+                                    )
+                                })}
+                            </View>
+                        )}
+
+                    </ScrollView>
+
+
+                    {/* call button and end delivety button */}
+                    <View style={styles.endDeliveryContainer}>
+                        <TouchableOpacity
+                            style={styles.btnEnd}
+                            onPress={() => {
+                                let phoneNumber = order.CustomerPhoneNumberOrder.replace(/\D/g, '');
+                                Linking.openURL(`tel:${phoneNumber}`)
+                            }}
+                        >
+                            <Text>Ligar</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity
+                            style={styles.btnEnd}
+                            onPress={onPressBtnEndDelivery}
+                        >
+                            <Text style={{ fontWeight: "bold", color: "#666" }}>
+                                FINALIZAR ENTREGA
+                            </Text>
+                        </TouchableOpacity>
+
+                    </View>
+                </>
+            }
         </KeyboardAvoidingView>
     );
 };
