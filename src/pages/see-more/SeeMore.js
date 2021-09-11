@@ -1,15 +1,11 @@
-import React, { useState, useEffect } from "react";
-import {
-    KeyboardAvoidingView, TouchableOpacity, Text, StyleSheet,
-    View, ScrollView, BackHandler, Linking,
-} from "react-native";
-
 import { MaterialIcons } from "@expo/vector-icons";
-import * as masks from "../../utils/masks";
+import * as Linking from 'expo-linking';
+import React, { useEffect, useState } from "react";
+import { BackHandler, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import Header from "../../components/Header";
 import * as orderService from "../../services/orderService";
 import store from "../../store";
-
-import Header from "../../components/Header";
+import * as masks from "../../utils/masks";
 
 const SeeMore = ({ navigation }) => {
     const [order] = useState(store.getState().orderState.order);

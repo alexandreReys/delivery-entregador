@@ -1,19 +1,14 @@
-import React, { useState, useEffect, useCallback } from "react";
-import {
-    KeyboardAvoidingView, TouchableOpacity, Text, StyleSheet,
-    View, ScrollView, Alert, BackHandler, Linking,
-} from "react-native";
-
 import { MaterialIcons } from "@expo/vector-icons";
-import * as utils from "../../utils";
-import * as masks from "../../utils/masks";
+import { useFocusEffect } from "@react-navigation/native";
+import * as Linking from 'expo-linking';
+import React, { useCallback, useEffect, useState } from "react";
+import { Alert, BackHandler, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import Loader from "../../components/Loader";
+import SeeMoreHeader from "../../components/SeeMoreHeader";
 import * as orderService from "../../services/orderService";
 import store from "../../store";
-import { actionClearOrders, actionSetOrder, actionSetOrders } from "../../store/actions";
-
-import SeeMoreHeader from "../../components/SeeMoreHeader";
-import Loader from "../../components/Loader";
-import { useFocusEffect } from "@react-navigation/native";
+import { actionClearOrders } from "../../store/actions";
+import * as utils from "../../utils";
 
 const OrderOnTheWay = ({ route, navigation }) => {
     const { orderParam } = route.params;
