@@ -1,12 +1,12 @@
 {
   "expo": {
-    "name": "Entreg. ANR Delivery",
+    "name": "ANR Entregador Delivery",
     "slug": "entregadoranrdelivery",
     "platforms": [
       "ios",
       "android"
     ],
-    "version": "1.2.1",
+    "version": "1.3.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -23,7 +23,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.anralexandre.entregadoranrdelivery",
-      "buildNumber": "1.2.1"
+      "buildNumber": "1.3.1"
     },
     "android": {
       "package": "com.anralexandre.entregadoranrdelivery",
@@ -31,7 +31,7 @@
         "ACCESS_COARSE_LOCATION", 
         "ACCESS_FINE_LOCATION"
       ],
-      "versionCode": 7
+      "versionCode": 8
     }
   }
 }
